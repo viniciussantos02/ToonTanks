@@ -8,6 +8,7 @@
 
 class USpringArmComponent;
 class UCameraComponent;
+class APlayerController;
 
 UCLASS()
 class TOONTANKS_API APawnTank : public APawnBase
@@ -29,6 +30,7 @@ private:
 
 	FVector MoveDirection;
 	FQuat RotationDirection;
+	APlayerController* PlayerController;
 
 	void CalculateMoveInput(float Value);
 	void CalculateRotationInput(float Value);
@@ -39,6 +41,8 @@ private:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+	virtual void HandleDestruction() override;
 
 public:
 	APawnTank();

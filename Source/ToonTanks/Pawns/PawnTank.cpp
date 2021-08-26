@@ -4,6 +4,8 @@
 #include "PawnTank.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "GameFramework/PlayerController.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 APawnTank::APawnTank()
@@ -23,6 +25,7 @@ void APawnTank::BeginPlay()
 {
 	Super::BeginPlay();
 
+	PlayerController = Cast<APlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
 }
 
 // Called every frame
@@ -32,6 +35,16 @@ void APawnTank::Tick(float DeltaTime)
 
 	Rotate();
 	Move();
+
+	if (PlayerController)
+	{
+		FHitResult TraceHitResult;
+		PlayerController->GetHitResultUnderCursor(ECC_Visibility, false, OUT TraceHitResult);
+
+		FVector HitLocation = TraceHitResult.ImpactPoint;
+
+		APawnBase::RotateTurret(HitLocation);
+	}
 }
 
 // Called to bind functionality to input
@@ -41,6 +54,7 @@ void APawnTank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 	PlayerInputComponent->BindAxis("MoveForward", this, &APawnTank::CalculateMoveInput);
 	PlayerInputComponent->BindAxis("RotateTurret", this, &APawnTank::CalculateRotationInput);
+	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &APawnTank::Fire);
 }
 
 void APawnTank::CalculateMoveInput(float Value)
@@ -63,4 +77,11 @@ void APawnTank::Move()
 void APawnTank::Rotate()
 {
 	AddActorLocalRotation(RotationDirection, true);
+}
+
+void APawnTank::HandleDestruction()
+{
+	APawnBase::HandleDestruction();
+
+
 }
