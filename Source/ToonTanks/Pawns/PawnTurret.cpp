@@ -25,9 +25,12 @@ void APawnTurret::Tick(float DeltaTime)
 
 void APawnTurret::CheckFireCondition() 
 {
-	if (PlayerPawn && GetDistanceToPlayer() <= RangeToStartFire)
+	if (PlayerPawn)
 	{
-		APawnBase::Fire();
+		if (PlayerPawn->GetIsPlayerAlive() && GetDistanceToPlayer() <= RangeToStartFire)
+		{
+			APawnBase::Fire();
+		}
 	}	
 }
 
@@ -45,5 +48,5 @@ void APawnTurret::HandleDestruction()
 {
 	APawnBase::HandleDestruction();
 
-
+	Destroy();
 }

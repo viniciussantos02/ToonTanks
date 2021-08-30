@@ -31,8 +31,8 @@ private:
 
 protected:
 	virtual void BeginPlay() override;
-	virtual void HandleDestruction() override;
 
 public:
 	virtual void Tick(float DeltaTime) override;
+	virtual void HandleDestruction() override;
 };

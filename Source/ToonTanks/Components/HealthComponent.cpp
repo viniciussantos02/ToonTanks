@@ -9,10 +9,7 @@
 UHealthComponent::UHealthComponent()
 {
 	PrimaryComponentTick.bCanEverTick = false;
-
-
 }
-
 
 // Called when the game starts
 void UHealthComponent::BeginPlay()
@@ -32,6 +29,7 @@ void UHealthComponent::TakeDamage(AActor* DamagedActor, float Damage, const clas
 	{
 		Health = FMath::Clamp(Health - Damage, 0.f, DefaultHealth);
 
+		UE_LOG(LogTemp, Warning, TEXT("Health remaning: %f"), Health)
 		if (Health <= 0)
 		{
 			if (TanksGameMode)

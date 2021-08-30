@@ -33,8 +33,9 @@ private:
 protected:
 	void RotateTurret(FVector LookAtTarget);
 	void Fire();
-	virtual void HandleDestruction();
 
 public:
 	APawnBase();
+
+	virtual void HandleDestruction();
 };
